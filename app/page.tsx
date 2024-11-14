@@ -5,6 +5,8 @@ import { useEffect, useState } from "react";
 export default function Home() {
   const [win, setWin] = useState<string | null>(null);
   const [algorithm, setAlgorithm] = useState<string>("random");
+  const [count, setCount] = useState<number>(0);
+  const [runtime, setRuntime] = useState<number>(0);
   const [grid, setGrid] = useState([
       [" ", " ", " "],
       [" ", " ", " "],
@@ -49,6 +51,8 @@ export default function Home() {
   
     const data = await response.json();
     setGrid(data["new_grid"]);
+    setCount(data["count"]);
+    setRuntime(data["runtime"]);
   }
 
   const checkWin = (grid: string[][]) => {
@@ -124,6 +128,10 @@ export default function Home() {
         <div className={`bg-neutral-500 px-4 py-2 rounded-full border-2 border-neutral-700 dark:border-neutral-300 ${ algorithm === "heuristic" ? "underline" : "" }`} onClick={() => setAlgorithm("heuristic")}>Heuristic</div>
         <div className={`bg-neutral-500 px-4 py-2 rounded-full border-2 border-neutral-700 dark:border-neutral-300 ${ algorithm === "minimax" ? "underline" : "" }`} onClick={() => setAlgorithm("minimax")}>Minimax</div>
         <div className={`bg-neutral-500 px-4 py-2 rounded-full border-2 border-neutral-700 dark:border-neutral-300 ${ algorithm === "abp_minimax" ? "underline" : "" }`} onClick={() => setAlgorithm("abp_minimax")}>Minimax (ABP)</div>
+      </div>
+      <div className="flex gap-4 mt-2">
+        <p><b>States Checked:</b> {count}</p>
+        <p><b>Runtime:</b> {runtime} ms</p>
       </div>
     </div>
   );
