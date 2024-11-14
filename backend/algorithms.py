@@ -17,28 +17,35 @@ def heuristic(grid):
         
 def minimax(grid):
     max_squares = []
-    for row, col in empty_cells(grid):
+    ecs = empty_cells(grid)
+    
+    for row, col in ecs:
         grid[row][col] = "X"
-        if minimax_recursive(grid) == 1:
-            max_squares.append([row, col])
+        score, depth = minimax_recursive(grid)
+        if score == 1:
+            max_squares.append([row, col, depth])
         grid[row][col] = " "
         
     if max_squares:
-        row, col = random.choice(max_squares)
+        max_squares.sort(key=lambda x: x[2])
+        row, col, _ = max_squares[0]
         grid[row][col] = "X"
     else:
         heuristic(grid)
+
 
 def abp_minimax(grid):
     max_squares = []
     for row, col in empty_cells(grid):
         grid[row][col] = "X"
-        if abp_minimax_recursive(grid) == 1:
-            max_squares.append([row, col])
+        val, depth = abp_minimax_recursive(grid)
+        if val == 1:
+            max_squares.append([row, col, depth])
         grid[row][col] = " "
         
     if max_squares:
-        row, col = random.choice(max_squares)
+        max_squares.sort(key=lambda x: x[2])
+        row, col, _ = max_squares[0]
         grid[row][col] = "X"
     else:
         heuristic(grid)
